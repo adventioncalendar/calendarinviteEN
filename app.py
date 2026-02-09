@@ -55,7 +55,7 @@ def invite():
         f"DTSTAMP:{dtstamp_utc(now)}",
         f"DTSTART;VALUE=DATE:{start_date}",
         f"DTEND;VALUE=DATE:{end_date}",
-        "RRULE:FREQ=MONTHLY;INTERVAL=6",
+        "RRULE:FREQ=MONTHLY;INTERVAL=1",
         f"SUMMARY:{ics_escape(title)}",
         f"DESCRIPTION:{ics_escape(event_description)}",
 
@@ -89,6 +89,7 @@ def health():
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=3000)
+
 
 
 
