@@ -30,9 +30,9 @@ def add_months(d: date, months: int) -> date:
 @app.route("/invite.ics")
 def invite():
     now = datetime.utcnow()
-    base_date = now.date()  # dynamic start = download date
+    base_date = now.date()  # dynamic start = download date (UTC)
 
-    # Define 6 different events
+    # 6 different events (each repeats every 6 months; together = monthly forever)
     events_data = [
         ("Do your HIV Self-Test", "Please complete your HIV self-test this month."),
         ("Check your HIV Status", "Take time to check your HIV status."),
@@ -41,6 +41,12 @@ def invite():
         ("Health Check Reminder", "Prioritize your health this month."),
         ("Self-Test Follow-Up", "Follow up on your HIV self-testing plan."),
     ]
+
+    # Alerts:
+    # - Day before: midnight the day before (relative to all-day start at 00:00)
+    alarm_day_before = "TRIGGER;RELATED=START:-P1D"
+    # - Day of: 9am local time on the day (00:00 + 9 hours)
+    alarm_day_of = "TRIGGER;RELATED=START:PT9H"
 
     lines = [
         "BEGIN:VCALENDAR",
@@ -60,10 +66,24 @@ def invite():
             f"DTSTAMP:{dtstamp_utc(now)}",
             f"DTSTART;VALUE=DATE:{yyyymmdd(start_date)}",
             f"DTEND;VALUE=DATE:{yyyymmdd(end_date)}",
-            # Each event repeats every 6 months forever
             "RRULE:FREQ=MONTHLY;INTERVAL=6",
             f"SUMMARY:{ics_escape(title)}",
             f"DESCRIPTION:{ics_escape(description)}",
+
+            # Alert 1: day before
+            "BEGIN:VALARM",
+            alarm_day_before,
+            "ACTION:DISPLAY",
+            "DESCRIPTION:Reminder",
+            "END:VALARM",
+
+            # Alert 2: day of (9am)
+            "BEGIN:VALARM",
+            alarm_day_of,
+            "ACTION:DISPLAY",
+            "DESCRIPTION:Reminder",
+            "END:VALARM",
+
             "END:VEVENT",
         ])
 
@@ -83,3 +103,4 @@ def health():
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=3000)
+
