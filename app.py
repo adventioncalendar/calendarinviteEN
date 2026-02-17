@@ -1,6 +1,7 @@
 from flask import Flask, Response
 from datetime import datetime, timedelta, date
 import uuid
+import calendar
 
 app = Flask(__name__)
 
@@ -20,12 +21,8 @@ def yyyymmdd(d: date):
     return d.strftime("%Y%m%d")
 
 def add_months(d: date, months: int) -> date:
-    """Add months to a date without external libs."""
     y = d.year + (d.month - 1 + months) // 12
     m = (d.month - 1 + months) % 12 + 1
-    # clamp day to last day of target month
-    # (handles e.g., Jan 31 + 1 month -> Feb 28/29)
-    import calendar
     last_day = calendar.monthrange(y, m)[1]
     day = min(d.day, last_day)
     return date(y, m, day)
@@ -33,16 +30,16 @@ def add_months(d: date, months: int) -> date:
 @app.route("/invite.ics")
 def invite():
     now = datetime.utcnow()
-    start0 = now.date()  # dynamic "download date" (UTC)
+    base_date = now.date()  # dynamic start = download date
 
-    # Three events spaced 1 month apart
-    starts = [start0, add_months(start0, 1), add_months(start0, 2)]
-
-    title = "Pick up your HIVST"
-    descriptions = [
-        "Please go to your local medical centre (Reminder 1)",
-        "Please go to your local medical centre (Reminder 2)",
-        "Please go to your local medical centre (Reminder 3)",
+    # Define 6 different events
+    events_data = [
+        ("Do your HIV Self-Test", "Please complete your HIV self-test this month."),
+        ("Check your HIV Status", "Take time to check your HIV status."),
+        ("Monthly Health Reminder", "Visit your local medical centre if needed."),
+        ("Stay Protected", "Ensure you know your HIV status."),
+        ("Health Check Reminder", "Prioritize your health this month."),
+        ("Self-Test Follow-Up", "Follow up on your HIV self-testing plan."),
     ]
 
     lines = [
@@ -53,21 +50,20 @@ def invite():
         "METHOD:PUBLISH",
     ]
 
-    for i, start_date in enumerate(starts):
-        uid = f"{uuid.uuid4()}@ics-generator"
-        dtstart = yyyymmdd(start_date)
-        dtend = yyyymmdd(start_date + timedelta(days=1))
+    for i, (title, description) in enumerate(events_data):
+        start_date = add_months(base_date, i)
+        end_date = start_date + timedelta(days=1)
 
         lines.extend([
             "BEGIN:VEVENT",
-            f"UID:{uid}",
+            f"UID:{uuid.uuid4()}@ics-generator",
             f"DTSTAMP:{dtstamp_utc(now)}",
-            f"DTSTART;VALUE=DATE:{dtstart}",
-            f"DTEND;VALUE=DATE:{dtend}",
-            # Repeat every 3 months forever (so 3 events interleave to monthly forever)
-            "RRULE:FREQ=MONTHLY;INTERVAL=3",
+            f"DTSTART;VALUE=DATE:{yyyymmdd(start_date)}",
+            f"DTEND;VALUE=DATE:{yyyymmdd(end_date)}",
+            # Each event repeats every 6 months forever
+            "RRULE:FREQ=MONTHLY;INTERVAL=6",
             f"SUMMARY:{ics_escape(title)}",
-            f"DESCRIPTION:{ics_escape(descriptions[i])}",
+            f"DESCRIPTION:{ics_escape(description)}",
             "END:VEVENT",
         ])
 
@@ -87,10 +83,3 @@ def health():
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=3000)
-
-
-
-
-
-
-
