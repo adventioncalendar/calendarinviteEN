@@ -34,7 +34,7 @@ def invite():
 
     # 6 different events (each repeats every 6 months; together = monthly forever)
     events_data = [
-        ("Self-Test Reminder: New Partner?", "Have you changed partners recently? If you’ve started seeing someone new or don’t know your partner’s HIV status, now is a good time to do an HIV self-test. Testing regularly helps you stay in control of your health and take action early if needed."),
+        ("Self-Test Reminder: Have you changed partners recently?", "If you’ve started seeing someone new or don’t know your partner’s HIV status, now is a good time to do an HIV self-test. Testing regularly helps you stay in control of your health and take action early if needed."),
         ("Self-Test Reminder: After Possible Exposure", "Had unprotected sex or a condom break? Do an HIV self-test as soon as possible. If exposure happened within the last 72 hours, seek PEP immediately. Don’t wait — act early."),
         ("Self-Test Reminder: Due for Your 3-Month Check?", "On PrEP or at ongoing risk? If you’re taking daily oral PrEP, you should self-test for HIV at least every 3 months. Regular testing ensures PrEP remains safe and effective."),
         ("Self-Test Reminder: Stopped PrEP?", "Paused or planning to restart? Before restarting PrEP, confirm your HIV-negative status with a self-test. Regular testing protects you and keeps prevention working."),
@@ -103,5 +103,6 @@ def health():
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=3000)
+
 
 
