@@ -1,5 +1,5 @@
-from flask import Flask, request, Response
-from datetime import datetime, timedelta
+from flask import Flask, Response
+from datetime import datetime, timedelta, date
 import uuid
 
 app = Flask(__name__)
@@ -13,69 +13,67 @@ def ics_escape(text):
         .replace(",", "\\,")
     )
 
-def yyyymmdd_utc(dt):
-    return dt.strftime("%Y%m%d")
-
 def dtstamp_utc(dt):
     return dt.strftime("%Y%m%dT%H%M%SZ")
+
+def yyyymmdd(d: date):
+    return d.strftime("%Y%m%d")
+
+def add_months(d: date, months: int) -> date:
+    """Add months to a date without external libs."""
+    y = d.year + (d.month - 1 + months) // 12
+    m = (d.month - 1 + months) % 12 + 1
+    # clamp day to last day of target month
+    # (handles e.g., Jan 31 + 1 month -> Feb 28/29)
+    import calendar
+    last_day = calendar.monthrange(y, m)[1]
+    day = min(d.day, last_day)
+    return date(y, m, day)
 
 @app.route("/invite.ics")
 def invite():
     now = datetime.utcnow()
+    start0 = now.date()  # dynamic "download date" (UTC)
 
-    start_date = yyyymmdd_utc(now)
-    end_date = yyyymmdd_utc(now + timedelta(days=1))
+    # Three events spaced 1 month apart
+    starts = [start0, add_months(start0, 1), add_months(start0, 2)]
 
-    title = "Do your HIV Self-Test"
-    event_description = "It's time to do your HIV Self-Test"
+    title = "Pick up your HIVST"
+    descriptions = [
+        "Please go to your local medical centre (Reminder 1)",
+        "Please go to your local medical centre (Reminder 2)",
+        "Please go to your local medical centre (Reminder 3)",
+    ]
 
-    # Alert 1: day before (either midnight or 9am the day before)
-    alarm = request.args.get("alarm", "1day").lower()
-    if alarm in ("9am", "same"):
-        # 9am the day before (relative to 00:00 on event day)
-        trigger_1 = "-PT15H"
-        trigger_1_line = f"TRIGGER;RELATED=START:{trigger_1}"
-    else:
-        # midnight the day before
-        trigger_1_line = "TRIGGER;RELATED=START:-P1D"
-
-    # Alert 2: on the day of the event at 9am local time
-    trigger_2_line = "TRIGGER;RELATED=START:PT9H"
-
-    uid = f"{uuid.uuid4()}@ics-generator"
-
-    ics = "\r\n".join([
+    lines = [
         "BEGIN:VCALENDAR",
         "VERSION:2.0",
         "PRODID:-//Dynamic ICS Generator//EN",
         "CALSCALE:GREGORIAN",
         "METHOD:PUBLISH",
-        "BEGIN:VEVENT",
-        f"UID:{uid}",
-        f"DTSTAMP:{dtstamp_utc(now)}",
-        f"DTSTART;VALUE=DATE:{start_date}",
-        f"DTEND;VALUE=DATE:{end_date}",
-        "RRULE:FREQ=MONTHLY;INTERVAL=1",
-        f"SUMMARY:{ics_escape(title)}",
-        f"DESCRIPTION:{ics_escape(event_description)}",
+    ]
 
-        # Alert 1 (day before)
-        "BEGIN:VALARM",
-        trigger_1_line,
-        "ACTION:DISPLAY",
-        "DESCRIPTION:Reminder",
-        "END:VALARM",
+    for i, start_date in enumerate(starts):
+        uid = f"{uuid.uuid4()}@ics-generator"
+        dtstart = yyyymmdd(start_date)
+        dtend = yyyymmdd(start_date + timedelta(days=1))
 
-        # Alert 2 (day of)
-        "BEGIN:VALARM",
-        trigger_2_line,
-        "ACTION:DISPLAY",
-        "DESCRIPTION:Reminder",
-        "END:VALARM",
+        lines.extend([
+            "BEGIN:VEVENT",
+            f"UID:{uid}",
+            f"DTSTAMP:{dtstamp_utc(now)}",
+            f"DTSTART;VALUE=DATE:{dtstart}",
+            f"DTEND;VALUE=DATE:{dtend}",
+            # Repeat every 3 months forever (so 3 events interleave to monthly forever)
+            "RRULE:FREQ=MONTHLY;INTERVAL=3",
+            f"SUMMARY:{ics_escape(title)}",
+            f"DESCRIPTION:{ics_escape(descriptions[i])}",
+            "END:VEVENT",
+        ])
 
-        "END:VEVENT",
-        "END:VCALENDAR",
-    ])
+    lines.append("END:VCALENDAR")
+
+    ics = "\r\n".join(lines) + "\r\n"
 
     return Response(
         ics,
