@@ -34,12 +34,12 @@ def invite():
 
     # 6 different events (each repeats every 6 months; together = monthly forever)
     events_data = [
-        ("Do your HIV Self-Test", "Please complete your HIV self-test this month."),
-        ("Check your HIV Status", "Take time to check your HIV status."),
-        ("Monthly Health Reminder", "Visit your local medical centre if needed."),
-        ("Stay Protected", "Ensure you know your HIV status."),
-        ("Health Check Reminder", "Prioritize your health this month."),
-        ("Self-Test Follow-Up", "Follow up on your HIV self-testing plan."),
+        ("Self-Test Reminder: New Partner?", "Have you changed partners recently? If you’ve started seeing someone new or don’t know your partner’s HIV status, now is a good time to do an HIV self-test. Testing regularly helps you stay in control of your health and take action early if needed."),
+        ("Self-Test Reminder: After Possible Exposure", "Had unprotected sex or a condom break? Do an HIV self-test as soon as possible. If exposure happened within the last 72 hours, seek PEP immediately. Don’t wait — act early."),
+        ("Self-Test Reminder: Due for Your 3-Month Check?", "On PrEP or at ongoing risk? If you’re taking daily oral PrEP, you should self-test for HIV at least every 3 months. Regular testing ensures PrEP remains safe and effective."),
+        ("Self-Test Reminder: Stopped PrEP?", "Paused or planning to restart? Before restarting PrEP, confirm your HIV-negative status with a self-test. Regular testing protects you and keeps prevention working."),
+        ("Self-Test Reminder: No Symptoms Doesn’t Mean No HIV", "Feeling healthy? Test anyway. Many people with HIV have no symptoms, especially in the early stages. An HIV self-test is the only way to know your status."),
+        ("Self-Test Reminder: When Was Your Last Test?", "If you can’t remember your last HIV test, it’s probably time to self-test. Regular testing keeps you informed and in control."),
     ]
 
     # Alerts:
@@ -103,4 +103,5 @@ def health():
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=3000)
+
 
