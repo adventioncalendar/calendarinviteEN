@@ -34,12 +34,12 @@ def invite():
 
     # 6 different events (each repeats every 6 months; together = monthly forever)
     events_data = [
-        ("Protect Your Partner and Self-Test for HIV", "If you’ve had a new or multiple partners, or are unsure of your partner’s status, take an HIV self-test. Knowing your status helps protect both you and those you care about."),
-        ("Confirm Any Reactive Result After Possible HIV Exposure by Self-Testing for HIV", "After possible exposure such as unprotected sex or condom breakage use an HIV self-test promptly. If the result is reactive, confirm it with a healthcare provider."),
-        ("Prepare for Quarterly PrEP Refill Through This Quarterly Self-Testing for HIV", "If you are taking daily oral PrEP, test for HIV at least every 3 months. Self-testing helps you stay on schedule and continue PrEP safely."),
-        ("Increase Confidence in Maintaining or Restarting PrEP/PEP — Self-Test for HIV", "Before continuing, restarting PrEP, or after using PEP, confirm your HIV-negative status with a self-test. It gives you confidence and supports safe prevention."),
-        ("Take Control with Timely Detection by Self-Testing for HIV", "Many people with HIV have no early symptoms. Self-testing allows early detection and quick action to protect your long-term health."),
-        ("Use HIV Self-Testing as Part of Your Personalized Care After a PrEP Break", "If you’ve paused or stopped PrEP, test before restarting. Regular self-testing supports safe and personalized prevention."),
+        ("Protect yourself and your partner with HIV self-testing","Seeing someone new or unsure of a partner’s HIV status? A self-test helps you stay confident and protect what matters. Testing regularly keeps you in control of your health and supports prevention."),
+        ("Confirm your HIV status after a possible exposure: Use an HIV self-test now","Had unprotected sex or a condom break? Take an HIV self-test as soon as possible. If exposure was within the last 72 hours, seek PEP immediately. Acting early helps you stay protected and informed."),
+        ("Prepare for your quarterly PrEP refill by taking an HIV self-test now","On PrEP or continuing prevention? If you’re taking daily oral PrEP, self-test for HIV at least every 3 months. Regular testing keeps your PrEP routine safe, effective, and on track."),
+        ("Be confident while on, or when looking to restart, PrEP by taking an HIV self-test now","Paused or thinking of restarting? Before you begin again, confirm your HIV-negative status with a self-test. Regular testing protects you and keeps your prevention plan working."),
+        ("Take control of your health by taking an HIV self-test now","Feeling healthy doesn’t always mean HIV-free. Many people have no early symptoms. A self-test gives you clarity, confidence, and control over your status."),
+        ("Make HIV self-testing part of your personalized care after a break from PrEP","Not sure when you last tested? Now is a great time to self-test. Regular testing helps you detect early and stay confident in your prevention journey."), 
     ]
 
     # Alerts:
@@ -103,6 +103,7 @@ def health():
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=3000)
+
 
 
 
