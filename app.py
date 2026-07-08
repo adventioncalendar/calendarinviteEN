@@ -34,13 +34,13 @@ def invite():
 
     # 6 different events (each repeats every 6 months; together = monthly forever)
     events_data =  [
-    ("Protektahan ang iyong sarili at ang iyong kapareha sa pamamagitan ng HIV self-testing","May bago ka bang partner o hindi sigurado sa HIV status ng iyong kapareha? Ang self-test ay makatutulong upang manatili kang kampante at maprotektahan ang mahalaga sa iyo. Ang regular na pagpapasuri ay nagbibigay sa iyo ng kontrol sa iyong kalusugan at sumusuporta sa pag-iwas sa HIV."),
-    ("Kumpirmahin ang iyong HIV status matapos ang posibleng exposure: Gumamit ng HIV self-test ngayon","Nagkaroon ba ng hindi protektadong pakikipagtalik o napunit ang condom? Gumamit ng HIV self-test sa lalong madaling panahon. Kung ang exposure ay nangyari sa loob ng nakaraang 72 oras, magpatingin agad para sa PEP. Ang maagap na pagkilos ay makatutulong upang manatili kang protektado at may tamang kaalaman."),
-    ("Maghanda para sa iyong quarterly PrEP refill sa pamamagitan ng HIV self-test ngayon","Ikaw ba ay gumagamit ng PrEP o nagpapatuloy sa HIV prevention? Kung umiinom ka ng araw-araw na oral PrEP, mag-HIV self-test nang hindi bababa sa bawat 3 buwan. Ang regular na pagsusuri ay tumutulong upang manatiling ligtas, epektibo, at tuloy-tuloy ang iyong PrEP routine."),
-    ("Maging kumpiyansa habang gumagamit o muling nagsisimula ng PrEP sa pamamagitan ng HIV self-test ngayon","Huminto ka ba o nagbabalak muling magsimula ng PrEP? Bago ka magsimula muli, kumpirmahin muna ang iyong HIV-negative status gamit ang self-test. Ang regular na pagsusuri ay tumutulong na maprotektahan ka at mapanatiling epektibo ang iyong prevention plan."),
-    ("Kontrolin ang iyong kalusugan sa pamamagitan ng HIV self-test ngayon","Ang pakiramdam na malusog ay hindi palaging nangangahulugang wala kang HIV. Maraming tao ang walang nararanasang sintomas sa mga unang yugto. Ang self-test ay nagbibigay sa iyo ng malinaw na kasagutan, kumpiyansa, at kontrol sa iyong HIV status."),
-    ("Gawing bahagi ng iyong personalized na pangangalaga ang HIV self-testing matapos ang pahinga sa PrEP","Hindi mo ba matandaan kung kailan ka huling nagpa-test? Ngayon ay magandang panahon upang mag-HIV self-test. Ang regular na pagsusuri ay tumutulong sa maagang pagtuklas at nagbibigay ng kumpiyansa sa iyong HIV prevention journey."),
-]
+        ("Protect yourself and your partner with HIV self-testing","Seeing someone new or unsure of a partner’s HIV status? A self-test helps you stay confident and protect what matters. Testing regularly keeps you in control of your health and supports prevention."),
+        ("Confirm your HIV status after a possible exposure: Use an HIV self-test now","Had unprotected sex or a condom break? Take an HIV self-test as soon as possible. If exposure was within the last 72 hours, seek PEP immediately. Acting early helps you stay protected and informed."),
+        ("Prepare for your quarterly PrEP refill by taking an HIV self-test now","On PrEP or continuing prevention? If you’re taking daily oral PrEP, self-test for HIV at least every 3 months. Regular testing keeps your PrEP routine safe, effective, and on track."),
+        ("Be confident while on, or when looking to restart, PrEP by taking an HIV self-test now","Paused or thinking of restarting? Before you begin again, confirm your HIV-negative status with a self-test. Regular testing protects you and keeps your prevention plan working."),
+        ("Take control of your health by taking an HIV self-test now","Feeling healthy doesn’t always mean HIV-free. Many people have no early symptoms. A self-test gives you clarity, confidence, and control over your status."),
+        ("Make HIV self-testing part of your personalized care after a break from PrEP","Not sure when you last tested? Now is a great time to self-test. Regular testing helps you detect early and stay confident in your prevention journey."), 
+    ]
 
     # Alerts:
     # - Day before: midnight the day before (relative to all-day start at 00:00)
